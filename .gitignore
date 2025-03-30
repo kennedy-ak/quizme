@@ -1,0 +1,38 @@
+.env
+# Python
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.env
+.env
+
+# Virtual Environment
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Streamlit
+.streamlit/
+
+# Temporary files
+*.tmp
+*.log
+*.swp
+*.swo
+*.DS_Store
+*.~lock.*
+
+# PDF-related
+*.pdf
+
+# OS-specific
+Thumbs.db
+.DS_Store
+
+# IDE-specific
+.vscode/
+.idea/
+*.iml.env
