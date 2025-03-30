@@ -410,4 +410,4 @@ else:
 
 # Footer
 st.markdown("---")
-st.markdown("Made with ❤️ using Streamlit, LangChain, and Groq")
+st.markdown("Made with ❤️ for Effe using  LangChain, and Groq")
