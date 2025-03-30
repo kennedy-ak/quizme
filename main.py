@@ -113,7 +113,7 @@ def generate_questions(pdf_text, num_questions, question_types, difficulty):
   
     model_name = "llama-3.3-70b-versatile"  
     
-  ow
+  
     if len(pdf_text) > 20000:
         model_options = {
             "llama3-70b-8192": "Llama 3 70B (8K context)",
