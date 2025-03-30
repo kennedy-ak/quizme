@@ -15,14 +15,14 @@ import random
 from dotenv import load_dotenv
 load_dotenv()
 
-# Set page configuration
+
 st.set_page_config(
     page_title="PDF Quiz Generator",
     page_icon="📚",
     layout="wide"
 )
 
-# Add custom CSS
+
 st.markdown("""
 <style>
 .quiz-card {
@@ -67,7 +67,7 @@ p {
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session states
+
 if 'questions' not in st.session_state:
     st.session_state.questions = []
 if 'current_question' not in st.session_state:
@@ -77,7 +77,6 @@ if 'answers' not in st.session_state:
 if 'show_results' not in st.session_state:
     st.session_state.show_results = False
 
-# Define the expected schema for the LLM output
 class QuizQuestion(BaseModel):
     question: str = Field(description="The text of the question")
     type: str = Field(description="Type of question: 'multiple_choice', 'true_false', or 'fill_in_blank'")
@@ -88,7 +87,6 @@ class QuizQuestion(BaseModel):
 class QuizQuestions(BaseModel):
     questions: List[QuizQuestion] = Field(description="List of quiz questions")
 
-# Function to extract text from a PDF file
 def extract_text_from_pdf(uploaded_file):
     with tempfile.NamedTemporaryFile(delete=False, suffix='.pdf') as temp_file:
         temp_file.write(uploaded_file.getvalue())
@@ -103,20 +101,20 @@ def extract_text_from_pdf(uploaded_file):
     os.unlink(temp_path)
     return text
 
-# Function to generate questions using Groq
+
 def generate_questions(pdf_text, num_questions, question_types, difficulty):
-    # Initialize the Groq LLM
+   
     api_key = os.getenv("GROQ_API_KEY")
     
     if not api_key:
         st.error("GROQ API key not found. Please set the GROQ_API_KEY environment variable.")
         return None
     
-    # Select the model based on document size
-    model_name = "llama3-70b-8192"  # Default model
+  
+    model_name = "llama-3.3-70b-versatile"  
     
-    # For very large documents, offer the option to use a model with a larger context window
-    if len(pdf_text) > 8000:
+  ow
+    if len(pdf_text) > 20000:
         model_options = {
             "llama3-70b-8192": "Llama 3 70B (8K context)",
             "llama3-8b-8192": "Llama 3 8B (8K context)",
@@ -206,37 +204,36 @@ def generate_questions(pdf_text, num_questions, question_types, difficulty):
     chain = prompt | llm | parser
     
     # Truncate PDF text if it's too long
-    max_tokens = 16000  # Increased from 8000 to support longer documents
+    max_tokens = 20000 
     if len(pdf_text) > max_tokens:
         pdf_text = pdf_text[:max_tokens]
         st.warning("The PDF content was truncated due to length constraints. The quiz will be based on the first part of the document.")
         
-    # For very large documents, offer chunking option
+    
     if len(pdf_text) > max_tokens:
         if st.checkbox("My document is very large. Use document chunking for better coverage", value=False):
-            # Simple chunking strategy - divide the document into multiple chunks with 20% overlap
+           
             chunk_size = max_tokens
             overlap = int(chunk_size * 0.2)
             chunks = []
             
-            # Create overlapping chunks
+           
             for i in range(0, len(pdf_text), chunk_size - overlap):
                 end = min(i + chunk_size, len(pdf_text))
                 chunks.append(pdf_text[i:end])
                 if end == len(pdf_text):
                     break
             
-            # Select random chunks to generate questions from - this will give broader coverage
+           
             if len(chunks) > 3:
-                selected_chunks = random.sample(chunks, 3)  # Select 3 random chunks
-                # Join the selected chunks
+                selected_chunks = random.sample(chunks, 3)  
+                
                 pdf_text = " ".join(selected_chunks)
-                # Truncate again if needed
+                
                 if len(pdf_text) > max_tokens:
                     pdf_text = pdf_text[:max_tokens]
                 st.info("Using document chunking to generate questions from different parts of your document.")
     
-    # Generate the questions
     try:
         result = chain.invoke({
             "text": pdf_text,
@@ -251,7 +248,7 @@ def generate_questions(pdf_text, num_questions, question_types, difficulty):
 
 # Function to handle question navigation
 def go_to_next_question():
-    # Save the current answer
+  
     question_type = st.session_state.questions[st.session_state.current_question]["type"]
     
     if question_type == "multiple_choice":
@@ -284,7 +281,7 @@ def restart_quiz():
 st.title("📚 PDF Quiz Generator")
 
 if not st.session_state.questions:
-    # Initial setup page
+   
     st.write("Upload a PDF and generate quiz questions to test your knowledge!")
     
     with st.form("quiz_setup_form"):
@@ -351,7 +348,7 @@ elif st.session_state.show_results:
     total_questions = len(st.session_state.questions)
     
     for i, (question, answer) in enumerate(zip(st.session_state.questions, st.session_state.answers)):
-        # Use a cleaner approach with individual elements instead of continued markdown
+        
         with st.container():
             st.markdown(f"<div class='quiz-card'>", unsafe_allow_html=True)
             st.markdown(f"<h3>Question {i+1}: {question['question']}</h3>", unsafe_allow_html=True)
@@ -384,7 +381,7 @@ elif st.session_state.show_results:
                 user_answer = answer
                 correct = question["correct_answer"]
                 
-                # Case-insensitive comparison for fill-in-the-blank
+                
                 if user_answer.lower().strip() == correct.lower().strip():
                     is_correct = True
                     correct_answers += 1
