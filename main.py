@@ -1091,11 +1091,8 @@ p {
 """, unsafe_allow_html=True)
 
 
-<<<<<<< HEAD
 
 # Initialize session states
-=======
->>>>>>> 92f420419e819193535eccbec849dd50b1ae4adf
 if 'questions' not in st.session_state:
     st.session_state.questions = []
 if 'current_question' not in st.session_state:
