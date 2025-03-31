@@ -401,29 +401,6 @@ if "history" in st.session_state and len(st.session_state.history) > 0:
             """, unsafe_allow_html=True)
             st.audio(item['file'], format="audio/mp3")
 
-# Footer with deployment instructions
-st.markdown("---")
-st.markdown('<h3 style="color: #4ECDC4;">🚀 Deployment Guide</h3>', unsafe_allow_html=True)
-st.markdown("""
-1. Save this code to a file named `app.py`
-2. Install required packages:
-   ```
-   pip install streamlit gtts scipy numpy
-   ```
-3. Run the app locally:
-   ```
-   streamlit run app.py
-   ```
-4. For cloud deployment, create a `requirements.txt` file with:
-   ```
-   streamlit
-   gtts
-   scipy
-   numpy
-   ```
-   
-   This version doesn't require PyTorch or any special system dependencies!
-""")
 
 # Clean up temporary files when the app is closed
 def cleanup():
