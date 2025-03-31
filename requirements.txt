@@ -2,6 +2,13 @@ streamlit
 langchain
 langchain-groq
 langchain-core
-PyPDF2
 pydantic
 python-dotenv
+faiss-cpu
+sentence-transformers
+PyPDF2
+groq
+streamlit
+numpy
+tqdm
+plotly
