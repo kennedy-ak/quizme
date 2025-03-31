@@ -119,10 +119,7 @@ with st.sidebar:
         options=["Neutral", "Happy", "Serious", "Excited", "Calm", "Mysterious"]
     )
     
-    st.markdown("---")
-    st.markdown("### 💡 Pro Tips")
-    st.info("Short sentences often sound more natural than very long paragraphs.")
-    st.warning("Add emotion markers like [happy], [excited], or [whisper] to enhance speech.")
+   
 
 # Create columns for a more exciting layout
 col1, col2 = st.columns([3, 2])
